@@ -1,11 +1,29 @@
+import React, { useEffect, useState } from "react";
+import { getBills } from "./api";
 
-import UploadBill from "./pages/uploadBIll.jsx";
+function App() {
+  const [bills, setBills] = useState([]);
 
+  useEffect(() => {
+    const fetchBills = async () => {
+      const data = await getBills();
+      setBills(data);
+    };
+    fetchBills();
+  }, []);
 
-export default function App() {
   return (
-    <div className="p-5">
-      <UploadBill />
+    <div>
+      <h1>Bills List</h1>
+      <ul>
+        {bills.map((bill) => (
+          <li key={bill._id}>
+            {bill.name} - {bill.amount}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
+
+export default App;
