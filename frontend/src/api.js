@@ -1,10 +1,11 @@
 // frontend/src/api.js
 import axios from "axios";
 
-// Backend URL from Render
-const API_URL = "https://dewanshiopticals-mq36.onrender.com/api/bills";
+// Backend API URL
+const API_URL = import.meta.env.VITE_API_URL + "/api/bills";
+// or hardcode for now:
+// const API_URL = "https://dewanshiopticals-backend.onrender.com/api/bills";
 
-// Function to get all bills
 export const getBills = async () => {
   try {
     const response = await axios.get(API_URL);
