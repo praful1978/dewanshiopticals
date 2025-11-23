@@ -79,7 +79,7 @@ export default function BillForm() {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
-      setMessage("✔ Bill saved successfully!");
+      setMessage("✔ Bill saved successfully! congrats");
       console.log(res.data);
     } catch (err) {
       console.error(err);
