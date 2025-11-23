@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/billdb')
+mongoose.connect('mongodb+srv://aadpalliwar_db_user:V9r5PvsSi5Hef12w@cluster0.tsq5lgc.mongodb.net/?appName=Cluster0')
   .then(()=>console.log("MongoDB connected"))
   .catch(err=>console.log(err));
 
