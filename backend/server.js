@@ -1,14 +1,27 @@
 const express = require("express");
-const app = express();
+const connectDB = require("./db");
 const cors = require("cors");
-const connectDB = require("./config/db"); // keep your db.js path
 
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB Atlas
 connectDB();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
 
-// Ensure the route file name matches exactly:
-app.use("/api/bills", require("./routes/billRoutes"));
+// Routes
+const billsRouter = require("./routes/bills");
+app.use("/api/bills", billsRouter);
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+// Root route
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
