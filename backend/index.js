@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://aadpalliwar_db_user:V9r5PvsSi5Hef12w@cluster0.tsq5lgc.mongodb.net/billdb?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGO_URI)
   .then(()=>console.log("MongoDB connected"))
   .catch(err=>console.log(err));
 
