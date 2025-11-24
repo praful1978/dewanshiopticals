@@ -75,7 +75,7 @@ export default function BillForm() {
 
     try {
       // CRITICAL FIX: Changed endpoint to /api/bills (plural)
-      const res = await axios.post("https://dewanshiopticals-mq36.onrender.com", formData, {
+      const res = await axios.post("https://dewanshiopticals-mq36.onrender.com/api/bills", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
