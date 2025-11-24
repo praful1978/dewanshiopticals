@@ -19,14 +19,16 @@ const BillSchema = new mongoose.Schema({
 });
 const Bill = mongoose.model("Bill", BillSchema);
 
-app.post("/api/bill", async(req,res)=>{
+app.post("/api/bills", async(req,res)=>{
   const bill = await Bill.create(req.body);
   res.json(bill);
 });
 
-app.get("/api/bill", async(req,res)=>{
+app.get("/api/bills", async(req,res)=>{
   const bills = await Bill.find();
   res.json(bills);
 });
 
-app.listen(5000, ()=>console.log("Backend running on 5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log("Backend running on " + PORT));
+
