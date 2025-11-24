@@ -1,22 +1,31 @@
-const express = require("express");
+// server.js (or app.js)
+
+const express = require('express');
 const connectDB = require("./config/db"); 
 const cors = require("cors");
-// Note: We need to load environment variables here if you use them in connectDB
+// 1. FIX: UNCOMMENT THIS LINE if you are running locally and relying on a .env file
+// Remember to install: npm install dotenv
 // require("dotenv").config(); 
 
 
-const app = express(); // ⬅️ 'app' is initialized here
+// --- Initialization ---
+const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware (All app.use() calls go here, after 'app' is defined)
-app.use(cors()); // ⬅️ The fix: Now app.use() is called after 'app' is defined
+// Connect to MongoDB Atlas
+// Calling this function here ensures the DB connection starts right away
+connectDB(); 
+
+
+// --- Middleware ---
+// 2. Middleware must be applied to the 'app' instance
+app.use(cors()); 
 app.use(express.json());
 
-// Connect to MongoDB Atlas
-connectDB();
 
-// Routes
-const billsRouter = require("./routes/bills");
+// --- Routes ---
+// Ensure the path "./routes/bills" is correct relative to this file's location
+const billsRouter = require("./routes/bills"); 
 app.use("/api/bills", billsRouter);
 
 // Root route
@@ -24,7 +33,8 @@ app.get("/", (req, res) => {
     res.send("Backend is running!");
 });
 
-// Start server
+
+// --- Start Server ---
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
