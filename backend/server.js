@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Bill schema
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 const billSchema = new mongoose.Schema({
   name: String,
   mobile: String,
