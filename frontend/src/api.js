@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Backend API URL (Render deployment)
-const API_URL = import.meta.env.VITE_API_URL + "/api/bills";
+const API_URL = "https://dewanshiopticals-mq36.onrender.com/api/bills"
 // Or hardcode for testing:
 // const API_URL = "https://dewanshiopticals-backend.onrender.com/api/bills"
 
