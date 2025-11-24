@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
   res.send("Optical Billing Server Running!");
 });
 
-app.use("/bills", billRoutes);
+app.use("/api/bills", billRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
