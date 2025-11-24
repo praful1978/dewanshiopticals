@@ -25,7 +25,7 @@ app.use(express.json());
 
 // --- Routes ---
 // Ensure the path "./routes/bills" is correct relative to this file's location
-const billsRouter = require("./routes/bills"); 
+const billsRouter = require("./routes/billRoutes"); 
 app.use("/api/bills", billsRouter);
 
 // Root route
