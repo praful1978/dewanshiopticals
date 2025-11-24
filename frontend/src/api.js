@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://dewanshiopticals-mq36.onrender.com/api/bills";
+const API_URL = "https://dewanshiopticals-mq36.onrender.com";
 
 export const getBills = async () => {
   try {
