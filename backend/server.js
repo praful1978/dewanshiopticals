@@ -12,11 +12,39 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log("Mongo Error: " + err));
 
-// Test route
+
+// ===== BILL SCHEMA =====
+const BillSchema = new mongoose.Schema({
+  customerName: String,
+  amount: Number,
+  date: String
+});
+
+const Bill = mongoose.model("Bill", BillSchema);
+
+// ===== ROUTES =====
+
+// Test
 app.get("/", (req, res) => {
   res.send("Server Working!");
 });
 
-// Listen
+// Create bill
+app.post("/api/bills", async (req, res) => {
+  try {
+    const bill = await Bill.create(req.body);
+    res.json(bill);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Get bills
+app.get("/api/bills", async (req, res) => {
+  const bills = await Bill.find();
+  res.json(bills);
+});
+
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log("Backend running on " + PORT));
