@@ -62,8 +62,8 @@ app.post("/api/bills", upload.single("image"), async (req, res) => {
       image: req.file ? req.file.filename : null,
     });
 
-    await bill.save();
-    res.json(bill);
+      await bill.save();
+    res.status(200).json({ success: true, bill }); // success response
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error saving bill" });
