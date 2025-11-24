@@ -1,8 +1,9 @@
-// backend/app.js or server.js
-import express from "express";
-import mongoose from "mongoose";
-import multer from "multer";
-import path from "path";
+// server.js
+const express = require("express");
+const mongoose = require("mongoose");
+const multer = require("multer");
+const path = require("path");
+
 
 const app = express();
 
