@@ -39,37 +39,47 @@ export default function App() {
     setFile(e.target.files[0]);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const fd = new FormData();
+  const fd = new FormData();
 
-    fd.append("name", form.name);
-    fd.append("mobile", form.mobile);
+  fd.append("name", form.name);
+  fd.append("mobile", form.mobile);
 
-    // Eye data
-    for (let key in form.rightEye) {
-      fd.append(`rightEye[${key}]`, form.rightEye[key]);
-    }
-    for (let key in form.leftEye) {
-      fd.append(`leftEye[${key}]`, form.leftEye[key]);
-    }
+  // Eye data
+  for (let key in form.rightEye) {
+    fd.append(`rightEye[${key}]`, form.rightEye[key]);
+  }
+  for (let key in form.leftEye) {
+    fd.append(`leftEye[${key}]`, form.leftEye[key]);
+  }
 
-    fd.append("frame", form.frame);
-    fd.append("lens", form.lens);
-    fd.append("repairing", form.repairing);
+  fd.append("frame", form.frame);
+  fd.append("lens", form.lens);
+  fd.append("repairing", form.repairing);
 
-    if (file) fd.append("image", file);
+  if (file) fd.append("image", file);
 
-    try {
-      await axios.post(API_URL, fd, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
-      setMessage("Bill Saved Successfully!");
-    } catch (err) {
-      setMessage("Error: " + err.message);
-    }
-  };
+  try {
+    const res = await axios.post(
+      "https://dewanshiopticals-mq36.onrender.com/api/bills",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log("Saved:", res.data);
+    setMessage("Bill Saved Successfully!");
+  } catch (err) {
+    console.error("Error:", err);
+    setMessage("Error saving bill");
+  }
+};
+
 
   return (
     <div style={{ width: "400px", margin: "auto", marginTop: "20px" }}>
