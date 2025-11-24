@@ -1,5 +1,5 @@
 const express = require("express");
-const connectDB = require("./db");
+const connectDB = require("./config/db"); // Adjust path based on your actual structure
 const cors = require("cors");
 app.use(cors()); // Add this line
 
