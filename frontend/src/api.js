@@ -1,3 +1,1 @@
-export default axios.create({
-  baseURL: "https://dewanshiopticals-mq36.onrender.com"
-});
+export const API_URL = "https://dewanshiopticals.vercel.app/api/bills";

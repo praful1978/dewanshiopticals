@@ -28,11 +28,31 @@
 // });
 
 // module.exports = mongoose.model("Bill", BillSchema);
-import Bill from "../models/Bill.js";
-import { connectDB } from "../api/db.js";
+import { MongoClient } from "mongodb";
 
-export async function createBill(req) {
-  await connectDB();
-  const bill = await Bill.create(req);
-  return bill;
+const uri = process.env.MONGO_URI;
+let cachedClient = null;
+
+async function connectToDatabase() {
+  if (cachedClient) return cachedClient;
+  const client = new MongoClient(uri);
+  await client.connect();
+  cachedClient = client;
+  return client;
+}
+
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    try {
+      const client = await connectToDatabase();
+      const db = client.db("billdb"); // MongoDB DB name
+      const bill = req.body;
+      const result = await db.collection("bills").insertOne(bill);
+      res.status(200).json({ success: true, data: result });
+    } catch (err) {
+      res.status(500).json({ error: "Error saving bill", details: err.message });
+    }
+  } else {
+    res.status(405).json({ error: "Method not allowed" });
+  }
 }
