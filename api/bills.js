@@ -1,69 +1,41 @@
-// // api/bills.js
-// import express from "express";
-// import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 
-// // ✔ Create express app
-// const app = express();
-// app.use(express.json());
+const uri = process.env.MONGO_URI;
+let cachedClient = null;
 
-// // ✔ MongoDB connection (only once)
-// let isConnected = false;
-
-// async function connectDB() {
-//   if (isConnected) return;
-//   await mongoose.connect(process.env.MONGO_URI);
-//   isConnected = true;
-//   console.log("MongoDB connected");
-// }
-
-// // ✔ Your schema
-// const billSchema = new mongoose.Schema({
-//   name: String,
-//   mobile: String,
-//   rightEye: Object,
-//   leftEye: Object,
-// });
-
-// const Bill = mongoose.models.Bill || mongoose.model("Bill", billSchema);
-
-// // ✔ ROUTE
-// app.post("/api/bills", async (req, res) => {
-//   try {
-//     await connectDB();
-//     const bill = await Bill.create(req.body);
-//     res.status(200).json({ success: true, bill });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Error saving bill" });
-//   }
-// });
-
-// // ✔ IMPORTANT: Export handler for Vercel
-// export default function handler(req, res) {
-//   app(req, res); // forward request to Express
-// }
-
-import mongoose from "mongoose";
-import Bill from "../models/Bill.js";
-
-const MONGO_URI = process.env.MONGO_URI;
+async function connectToDatabase() {
+  if (cachedClient) return cachedClient;
+  const client = new MongoClient(uri);
+  await client.connect();
+  cachedClient = client;
+  return client;
+}
 
 export default async function handler(req, res) {
-  try {
-    if (!mongoose.connection.readyState) {
-      await mongoose.connect(MONGO_URI);
+  // Add CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "https://www.dewanshiopticals.shop"); // frontend origin
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Handle preflight OPTIONS request
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  console.log("API hit:", req.method);
+
+  if (req.method === "POST") {
+    try {
+      const client = await connectToDatabase();
+      const db = client.db("billdb");
+      const result = await db.collection("bills").insertOne(req.body);
+      console.log("Saved:", req.body);
+      res.status(200).json({ success: true, data: result });
+    } catch (err) {
+      console.error("Error saving bill:", err.message);
+      res.status(500).json({ error: "Error saving bill", details: err.message });
     }
-
-    if (req.method === "POST") {
-      const bill = new Bill(req.body);
-      await bill.save();
-      return res.status(200).json({ success: true, bill });
-    }
-
-    return res.status(400).json({ error: "Invalid method" });
-
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: "Error saving bill" });
+  } else {
+    res.status(405).json({ error: "Method not allowed" });
   }
 }
