@@ -1,1 +1,1 @@
-export const API_URL = "https://dewanshiopticals.vercel.app/api/bills";
+export const API_URL = "https://dewanshiopticals.shop/api/bills";

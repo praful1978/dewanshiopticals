@@ -42,14 +42,17 @@ async function connectToDatabase() {
 }
 
 export default async function handler(req, res) {
+  console.log("API hit:", req.method); // logs will appear in Vercel
+
   if (req.method === "POST") {
     try {
       const client = await connectToDatabase();
-      const db = client.db("billdb"); // MongoDB DB name
-      const bill = req.body;
-      const result = await db.collection("bills").insertOne(bill);
+      const db = client.db("billdb");
+      const result = await db.collection("bills").insertOne(req.body);
+      console.log("Saved:", req.body);
       res.status(200).json({ success: true, data: result });
     } catch (err) {
+      console.error("Error saving bill:", err.message);
       res.status(500).json({ error: "Error saving bill", details: err.message });
     }
   } else {
