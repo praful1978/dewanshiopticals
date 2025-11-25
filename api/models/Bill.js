@@ -1,33 +1,3 @@
-// const mongoose = require("mongoose");
-
-// const BillSchema = new mongoose.Schema({
-//   name: String,
-//   mobile: String,
-
-//   rightEye: {
-//     sph: String,
-//     cyl: String,
-//     axis: String,
-//     vn: String,
-//   },
-
-//   leftEye: {
-//     sph: String,
-//     cyl: String,
-//     axis: String,
-//     vn: String,
-//   },
-
-//   frame: String,
-//   lens: String,
-//   repairing: String,
-
-//   image: String, // file name
-
-//   date: { type: Date, default: Date.now }
-// });
-
-// module.exports = mongoose.model("Bill", BillSchema);
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGO_URI;
@@ -42,7 +12,14 @@ async function connectToDatabase() {
 }
 
 export default async function handler(req, res) {
-  console.log("API hit:", req.method); // logs will appear in Vercel
+  // Add CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "https://www.dewanshiopticals.shop");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
 
   if (req.method === "POST") {
     try {
